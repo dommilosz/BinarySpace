@@ -10,7 +10,8 @@ eval(
 const interpreterBinarySpacesStr = (code)=>`
 r='replaceAll'
 eval(
-\`${code}\`[r](' ','0')[r]('\\t','1').split\`\\n\`
+\`${code}\`
+[r](' ','0')[r]('\\t','1').split\`\\n\`
 .map(a=>String.fromCharCode(parseInt(a,2))).join\`\`
 )
 `.trim()
@@ -26,7 +27,8 @@ eval(
 
 const interpreterStr = (code)=>`
 eval(
-\`${code}\`.split\`\\n\`
+\`${code}\`
+.split\`\\n\`
 .map(_=>String.fromCharCode(_.length))
 .join\`\`
 )
