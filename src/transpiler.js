@@ -1,37 +1,33 @@
-const interpreterBinarySpaces = (code)=>`
-s='split'
+const interpreterBinarySpaces = (code) => `
 r='replaceAll'
-eval(
-(a+"")[s]\`;\`[1][r](' ','0')[r]('\\t','1')[s]\`\\n\`
-.map(a=>String.fromCharCode(parseInt(a,2))).join\`\`
-)
+eval(String.fromCharCode(...
+(a+"").split\`;\`[1][r](' ',0)[r]('\t',1).split\`
+\`
+.map(a=>parseInt(a,2))
+))
 `.trim()
 
-const interpreterBinarySpacesStr = (code)=>`
+const interpreterBinarySpacesStr = (code) => `
 r='replaceAll'
-eval(
+eval(String.fromCharCode(...
 \`${code}\`
-[r](' ','0')[r]('\\t','1').split\`\\n\`
-.map(a=>String.fromCharCode(parseInt(a,2))).join\`\`
-)
+[r](' ',0)[r]('\t',1).split\`
+\`
+.map(a=>parseInt(a,2))
+))
 `.trim()
 
-const interpreter = (code)=>`
-s='split'
-eval(
-(a+"")[s]\`;\`[1][s]\`\\n\`
-.map(_=>String.fromCharCode(_.length))
-.join\`\`
-)
+const interpreter = (code) => `
+eval(String.fromCharCode(...
+(a+"").split\`;\`[1].split\`
+\`
+.map(_=>_.length)
+))
 `.trim()
 
-const interpreterStr = (code)=>`
-eval(
-\`${code}\`
-.split\`\\n\`
-.map(_=>String.fromCharCode(_.length))
-.join\`\`
-)
+const interpreterStr = (code) => `
+eval(String.fromCharCode(...\`${code}\`.split\`
+\`.map(_=>_.length)))
 `.trim()
 
 function transpile(code, format) {
