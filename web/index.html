@@ -82,7 +82,7 @@
 </style>
 
 
-<body onload="main()">
+<body onload="main.main()">
 <div id="divGrid">
     <div id="divInput">
         <div id="divCodeMirror"></div>
@@ -99,7 +99,7 @@
             <option value="func normal">Function</option>
             <option value="func binary">Function (binary spaces)</option>
         </select>
-        <button id="buttonAssemble" onclick="run()">Run (Ctrl+Enter) &gt;&gt;</button>
+        <button id="buttonAssemble" onclick="main.run()">Run (Ctrl+Enter) &gt;&gt;</button>
         <span id="spanVersion"></span>
     </div>
     <div id="divOutput">
@@ -107,10 +107,7 @@
     </div>
 </div>
 
-<script src="main.js"></script>
-<script src="../src/transpiler.js"></script>
-<script src="codemirror/codemirror.js"></script>
-<script src="codemirror/z80.js"></script>
+<script src="../dist/main.js"></script>
 </body>
 
 </html>

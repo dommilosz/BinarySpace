@@ -30,7 +30,7 @@ eval(String.fromCharCode(...\`${code}\`.split\`
 \`.map(_=>_.length)))
 `.trim()
 
-function transpile(code, format) {
+export function transpile(code, format) {
     if (format.includes("binary")) {
         code = Array.from(code).map(char => {
             char = char.charCodeAt(0);

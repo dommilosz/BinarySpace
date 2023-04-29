@@ -1,34 +1,25 @@
-let g_codeEditor = null
+import {basicSetup, EditorView} from "codemirror"
+import {javascript} from "@codemirror/lang-javascript"
+import {transpile} from "./transpiler";
 
-function main() {
-    setupEditor()
-    onResize()
+let g_codeEditor = new EditorView({
+    extensions: [basicSetup, javascript()],
+    parent: document.querySelector("#divCodeMirror")
+})
 
-    document.body.onresize = onResize
-    window.onkeydown = onKeyDown
-    window.onbeforeunload = onBeforeUnload
+export function main() {
+    setupEditor();
+    window.onkeydown = onKeyDown;
+    window.onbeforeunload = onBeforeUnload;
 }
 
 
-function setupEditor() {
-    g_codeEditor = CodeMirror(document.getElementById("divCodeMirror"),
-        {
-            lineNumbers: true, matchBrackets: true, indentWithTabs: true, highlightSelectionMatches: true,
-            tabSize: 4, indentUnit: 4, mode: "z80"
-        })
-
-    fetch("../examples/basic.bs")
-        .then(r => r.text())
-        .then(r => g_codeEditor.setValue(r))
-
-    g_codeEditor.refresh()
+async function setupEditor() {
+    let text = await (await fetch("../examples/basic.bs")).text();
+    g_codeEditor.dispatch({
+        changes: {from: 0, to: g_codeEditor.state.doc.length, insert: text}
+    })
 }
-
-function onResize() {
-    let rectInput = document.getElementById("divCodeMirror").getBoundingClientRect()
-    g_codeEditor.setSize(rectInput.width, rectInput.height)
-}
-
 
 function onBeforeUnload() {
     return "Your work will be lost if you close the page."
@@ -46,7 +37,7 @@ function onKeyDown(ev) {
 }
 
 
-function run() {
+export function run() {
     let mode = document.getElementById("selectMode").value;
     let isRun = mode==="1";
 
@@ -55,7 +46,7 @@ function run() {
     console.log(`Running: run: ${isRun}, format: ${format}`);
 
     let divText = document.getElementById("divOutputText");
-    let code = g_codeEditor.getValue();
+    let code = g_codeEditor.state.doc.toString();
     let evalCode = transpile(code, format);
     let output = "";
     divText.style.color = "";
@@ -65,6 +56,7 @@ function run() {
         }
 
         try {
+            let r,a;
             eval(evalCode);
         } catch (ex2) {
             divText.style.color = "red";
